@@ -26,7 +26,7 @@ public class Csv extends ArquivoTransacoesService {
 		Scanner scanner = null;
 		
 		try {
-			scanner = new Scanner(new File(arquivo));
+			scanner = new Scanner(new File(diretorio.concat(arquivo)));
 			
 			if (!scanner.hasNextLine())
 				throw new ArquivoVazioException("Arquivo " + arquivo + " não pode estar vazio");
