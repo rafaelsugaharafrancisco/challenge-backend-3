@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" 
+			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+			integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" 
+			integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous">
+		</script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" 
+			integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/style.css">
+		<meta charset="UTF-8">
+		<title>Página inicial</title>
+	</head>
+	<body>
+		<header>
+			<nav th:insert="~{base :: menuBar}"></nav>
+		</header>
+		<div class="jumbotron">
+		  <h1 class="display-4">Olá, usuário!</h1>
+		  <p class="lead">Seja bem-vindo ao nosso sistema de identificador de fraudes.</p>
+		  <hr class="my-4">
+		  <p>Esse sistema tem como objetivo identificar fraudes dado o arquivo de transações carregado via web.</p>
+		  <a class="btn btn-success btn-lg" href="#" role="button">Saiba mais</a>
+		</div>
+	</body>
+</html>

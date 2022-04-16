@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" 
+			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+			integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" 
+			integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous">
+		</script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" 
+			integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/style.css">
+		<meta charset="UTF-8">
+		<title>Lista de transações</title>
+	</head>
+	<body>
+		<header>
+			<nav th:insert="~{base::menuBar}"></nav>
+		</header>
+		<div class="card ml-2 mr-2">
+			<div class="card-body">
+				<h3 class="card-title text-center text-success"> Lista de transações efetuadas</h3>
+				<table class="table table-striped table-sm table-bordered">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Banco</th>
+							<th scope="col">Agencia</th>
+							<th scope="col">Conta</th>
+							<th scope="col">Valor</th>
+							<th scope="col">Data/Hora</th>
+						</tr>
+					</thead>
+					<tbody >
+						<tr th:each="transacao : ${transacoes}" scope="row">
+							<td th:text="${transacao.idTransacao}"></td>
+							<td th:text="${transacao.entidade}"></td>
+							<td th:text="${transacao.centro}"></td>
+							<td th:text="${transacao.numeroConta}"></td>
+							<td th:text="|R$ ${#numbers.formatDecimal(transacao.valorTransacao, 0, 'POINT', 2, 'COMMA')}|"></td>
+							<td th:text="${#temporals.format(transacao.dataHoraTransacao, 'dd/MM/yyyy HH:mm')}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
