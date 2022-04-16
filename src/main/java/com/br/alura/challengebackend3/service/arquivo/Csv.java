@@ -68,7 +68,8 @@ public class Csv extends ArquivoTransacoesService {
 			throw new ArquivoNaoEncontradoException("Arquivo " + arquivo + " não encontrado no diretório " + diretorio);
 			
 		} finally {
-			scanner.close();
+			if (scanner != null)
+				scanner.close();
 		}
 		
 		return super.filtrarParaDatasIguais(lista);
