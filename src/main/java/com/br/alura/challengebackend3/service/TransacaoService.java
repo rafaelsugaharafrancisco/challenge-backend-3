@@ -15,35 +15,34 @@ import com.br.alura.challengebackend3.model.Transacao;
 import com.br.alura.challengebackend3.repository.TransacoesRepository;
 import com.br.alura.challengebackend3.service.arquivo.ArquivoTransacoesService;
 
-
 @Service
 public class TransacaoService {
-	
+
 	@Autowired
 	private TransacoesRepository repository;
-	
+
 	@Autowired
 	private ArquivoTransacoesService csv;
-	
+
 	@Transactional
 	public TransacaoDto gravar(String arquivo) {
-		
+
 		List<TransacaoDto> transacoesDto = csv.criarLista(arquivo);
-		
+
 		LocalDate data = LocalDate.from(transacoesDto.stream().findFirst().get().getDataHoraTransacao());
-		
+
 		boolean existeTransacao = repository.findAll().stream()
 				.anyMatch(e -> LocalDate.from(e.getDataHoraTransacao()).isEqual(data));
-		
+
 		if (existeTransacao)
-			throw new TransacaoJaExisteException("Transações com a data " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) 
-			+ " já existem");
-		
+			throw new TransacaoJaExisteException(
+					"Já existem transações com a data " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
 		List<Transacao> transacoes = new ArrayList<Transacao>();
 		transacoesDto.forEach(trnDto -> transacoes.add(trnDto.toTransacao()));
-		
+
 		repository.saveAll(transacoes);
-		
+
 		return transacoesDto.stream().findFirst().get();
 	}
 }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.br.alura.challengebackend3.dto.TransacaoDto;
@@ -16,9 +15,6 @@ import com.br.alura.challengebackend3.exception.ArquivoVazioException;
 
 @Component
 public class Csv extends ArquivoTransacoesService {
-	
-	@Value("${file.directory}")
-	private String diretorio;
 
 	@Override
 	public List<TransacaoDto> criarLista(String arquivo) {
@@ -64,7 +60,7 @@ public class Csv extends ArquivoTransacoesService {
 			}
 			
 		} catch (FileNotFoundException e) {
-			throw new ArquivoNaoEncontradoException("Arquivo " + arquivo + " não encontrado no diretório " + diretorio);
+			throw new ArquivoNaoEncontradoException("Arquivo " + arquivo + " não encontrado.");
 			
 		} finally {
 			if (scanner != null)
