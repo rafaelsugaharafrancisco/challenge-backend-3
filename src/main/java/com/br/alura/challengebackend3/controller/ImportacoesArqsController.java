@@ -1,5 +1,7 @@
 package com.br.alura.challengebackend3.controller;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +16,11 @@ public class ImportacoesArqsController {
 
 	@Autowired
 	private ImportacoesArqsService service;
-	
+
 	@GetMapping("lista")
 	public ModelAndView lista() {
-		
-		return new ModelAndView("arquivos/lista").addObject("arqsCarregados", service.listaOrdenada());
+
+		return new ModelAndView("arquivos/lista").addObject("arqsCarregados",
+				Collections.unmodifiableList(service.listaOrdenada()));
 	}
 }

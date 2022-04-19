@@ -29,6 +29,6 @@ public class ImportacoesArqsDto {
 	}
 	
 	public static List<ImportacoesArqsDto> obterLista(List<ImportacoesArqs> impArqs) {
-		return impArqs.stream().map(ImportacoesArqsDto::new).collect(Collectors.toList());
+		return impArqs.stream().map(ImportacoesArqsDto::new).collect(Collectors.toUnmodifiableList());
 	}
 }

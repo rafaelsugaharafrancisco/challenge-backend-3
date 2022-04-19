@@ -50,6 +50,6 @@ public class TransacaoDto {
 	}
 	
 	public static List<TransacaoDto> obterLista(List<Transacao> transacoes) {
-		return transacoes.stream().map(TransacaoDto::new).collect(Collectors.toList());
+		return transacoes.stream().map(TransacaoDto::new).collect(Collectors.toUnmodifiableList());
 	}
 }
