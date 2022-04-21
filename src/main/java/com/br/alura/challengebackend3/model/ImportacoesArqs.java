@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "importacoes_arquivos")
+@Entity(name = "arquivosImportados")
 public class ImportacoesArqs {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)

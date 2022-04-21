@@ -1,7 +1,6 @@
 package com.br.alura.challengebackend3.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +9,7 @@ import lombok.Setter;
 @Setter
 public class FormularioArquivo {
 
-	@NotBlank(message = "Não pode ser nulo. Selecione um arquivo")
-	@Pattern(regexp = ".*.csv", message = "Arquivo inválido. Deve ser apenas extensão .csv")
-	private String nomeDoArquivo;
+	private MultipartFile arquivo;
 	
 	private String tamanhoDoArquivo;
 }

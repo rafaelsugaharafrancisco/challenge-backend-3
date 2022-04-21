@@ -24,12 +24,11 @@
 		<div class="card margin-card">
 			<div class="card-body">
 				<h3 class="card-title text-center text-success"> Importar Arquivo</h3>
-				<form class="needs-validation" novalidate th:object="${formularioArquivo}" action="carregar-arquivo" method="post">
+				<form class="needs-validation" th:object="${formularioArquivo}" action="carregar-arquivo" method="post" enctype="multipart/form-data">
 						<div class="custom-file">
-					  		<input th:field="*{nomeDoArquivo}" th:errorclass="is-invalid" 
-					  			type="file" class=" form-control custom-file-input" required>
-					  		<label class="custom-file-label" for="nomeDoArquivo">Escolha um arquivo com extensão .csv</label>
-					  		<div class="invalid-feedback" th:errors="*{nomeDoArquivo}"></div>
+					  		<input th:field="*{arquivo}" type="file" class=" form-control custom-file-input" required>
+					  		<label class="custom-file-label" for="arquivo">Escolha um arquivo com extensão .csv</label>
+					  		<small class="text-danger" th:text="${mensagemErro}"></small>
 					  	</div>
 					  	<button type="submit" class="btn btn-outline-success mt-1">Importar</button>
 					  	<button type="reset" class="btn btn-outline-success mt-1 pl-2">Limpar</button>

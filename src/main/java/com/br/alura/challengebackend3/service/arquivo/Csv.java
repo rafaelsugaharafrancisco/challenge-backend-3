@@ -1,50 +1,66 @@
 package com.br.alura.challengebackend3.service.arquivo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-import org.springframework.stereotype.Component;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import com.br.alura.challengebackend3.dto.TransacaoDto;
-import com.br.alura.challengebackend3.exception.ArquivoNaoEncontradoException;
-import com.br.alura.challengebackend3.exception.ArquivoVazioException;
+import com.br.alura.challengebackend3.exception.ArquivoNaoCorrespondenteTransacoes;
 
-@Component
+@Service
 public class Csv extends ArquivoTransacoesService {
 
+	private Scanner scanner;
+
 	@Override
-	public List<TransacaoDto> criarLista(String arquivo) {
-		List<TransacaoDto> lista = new ArrayList<>();
+	protected void abrirArquivo(Resource arquivo) {
+		
 		Scanner scanner = null;
 		
 		try {
-			scanner = new Scanner(new File(arquivo));
+			scanner = new Scanner(new File(arquivo.getURI()));
+		} catch (IOException e) {
+			System.out.println("Erro ao abrir o arquivo " + arquivo.getFilename());
+		}
+		
+		this.scanner = scanner;
+	}
+	
+	@Override
+	protected List<TransacaoDto> lerLinhasEliminarColunasInvalidas() {
+		
+		List<TransacaoDto> transacoesDto = new ArrayList<TransacaoDto>();
+		
+		while (this.scanner.hasNextLine()) {
+			String linha = this.scanner.nextLine();
 			
-			if (!scanner.hasNextLine())
-				throw new ArquivoVazioException("Arquivo " + arquivo + " não pode estar vazio");
+			if (!linha.contains(",")) {
+				throw new ArquivoNaoCorrespondenteTransacoes("Conteúdo do arquivo não corresponde a extensão csv");
+			}
 			
-			while (scanner.hasNextLine()) {
-				String linha = scanner.nextLine();
-				Scanner scannerLinha = new Scanner(linha);
+			Scanner scannerLinha = new Scanner(linha);
+			scannerLinha.useDelimiter(",");
+			
+			boolean haCampoInvalido = false;
+			while(scannerLinha.hasNext() && !haCampoInvalido) {
+				if (scannerLinha.next().isBlank()) {
+					haCampoInvalido = true;
+					System.out.println(linha);
+				}
+			}
+			scannerLinha.close();
+			
+			if (!haCampoInvalido) {
+				scannerLinha = new Scanner(linha);
 				scannerLinha.useDelimiter(",");
 				
-				boolean haErro = false;
-				while(scannerLinha.hasNext() && !haErro) {
-					if (scannerLinha.next().isBlank()) {
-						haErro = true;
-						System.out.println(linha);
-					}
-				}
-				scannerLinha.close();
-				
-				if (!haErro) {
-					scannerLinha = new Scanner(linha);
-					scannerLinha.useDelimiter(",");
+				while (scannerLinha.hasNext()) {
 					TransacaoDto t = new TransacaoDto();
 					t.setBancoOrigem(scannerLinha.next());
 					t.setAgenciaOrigem(scannerLinha.next());
@@ -54,21 +70,14 @@ public class Csv extends ArquivoTransacoesService {
 					t.setContaDestino(scannerLinha.next());
 					t.setValorTransacao(Double.parseDouble(scannerLinha.next()));
 					t.setDataHoraTransacao(LocalDateTime.parse(scannerLinha.next()));
-					scannerLinha.close();
-					lista.add(t);
+					transacoesDto.add(t);
 				}
-				
+				scannerLinha.close();
 			}
-			
-		} catch (FileNotFoundException e) {
-			throw new ArquivoNaoEncontradoException("Arquivo " + arquivo + " não encontrado.");
-			
-		} finally {
-			if (scanner != null)
-				scanner.close();
 		}
-		
-		return Collections.unmodifiableList(super.filtrarParaDatasIguais(lista));
+		if (this.scanner != null)
+			this.scanner.close();
+			
+		return transacoesDto;
 	}
-
 }

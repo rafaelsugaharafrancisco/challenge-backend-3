@@ -13,7 +13,6 @@ import com.br.alura.challengebackend3.dto.TransacaoDto;
 import com.br.alura.challengebackend3.exception.TransacaoJaExisteException;
 import com.br.alura.challengebackend3.model.Transacao;
 import com.br.alura.challengebackend3.repository.TransacoesRepository;
-import com.br.alura.challengebackend3.service.arquivo.ArquivoTransacoesService;
 
 @Service
 public class TransacaoService {
@@ -21,28 +20,25 @@ public class TransacaoService {
 	@Autowired
 	private TransacoesRepository repository;
 
-	@Autowired
-	private ArquivoTransacoesService csv;
-
 	@Transactional
-	public TransacaoDto gravar(String arquivo) {
+	public TransacaoDto gravar(List<TransacaoDto> transacoesDto) {
 
-		List<TransacaoDto> transacoesDto = csv.criarLista(arquivo);
-
-		LocalDate data = LocalDate.from(transacoesDto.stream().findFirst().get().getDataHoraTransacao());
+		TransacaoDto transacaoDto = transacoesDto.stream().findFirst().get();
+		
+		LocalDate dataTransacao = LocalDate.from(transacaoDto.getDataHoraTransacao());
 
 		boolean existeTransacao = repository.findAll().stream()
-				.anyMatch(e -> LocalDate.from(e.getDataHoraTransacao()).isEqual(data));
+				.anyMatch(e -> LocalDate.from(e.getDataHoraTransacao()).isEqual(dataTransacao));
 
 		if (existeTransacao)
 			throw new TransacaoJaExisteException(
-					"Já existem transações com a data " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+					"Já existem transações com a data " + dataTransacao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
 		List<Transacao> transacoes = new ArrayList<Transacao>();
 		transacoesDto.forEach(trnDto -> transacoes.add(trnDto.toTransacao()));
 
 		repository.saveAll(transacoes);
 
-		return transacoesDto.stream().findFirst().get();
+		return transacaoDto;
 	}
 }
