@@ -10,42 +10,31 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" 
 			integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous">
 		</script>
+		<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" 
 			integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 		<link rel="stylesheet" href="/css/style.css">
 		<meta charset="UTF-8">
-		<title>Lista de transações</title>
+		<title>Importar arquivo</title>
 	</head>
 	<body>
 		<header>
-			<nav th:insert="~{base::menuBar}"></nav>
+			<nav th:insert="~{base :: menuBar}"></nav>
 		</header>
-		<div class="card ml-2 mr-2">
+		<div class="card margin-card">
 			<div class="card-body">
-				<h3 class="card-title text-center text-success"> Lista de transações efetuadas</h3>
-				<table class="table table-striped table-sm table-bordered">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Banco</th>
-							<th scope="col">Agencia</th>
-							<th scope="col">Conta</th>
-							<th scope="col">Valor</th>
-							<th scope="col">Data/Hora</th>
-						</tr>
-					</thead>
-					<tbody >
-						<tr th:each="transacao : ${transacoes}" scope="row">
-							<td th:text="${transacao.idTransacao}"></td>
-							<td th:text="${transacao.entidade}"></td>
-							<td th:text="${transacao.centro}"></td>
-							<td th:text="${transacao.numeroConta}"></td>
-							<td th:text="|R$ ${#numbers.formatDecimal(transacao.valorTransacao, 0, 'POINT', 2, 'COMMA')}|"></td>
-							<td th:text="${#temporals.format(transacao.dataHoraTransacao, 'dd/MM/yyyy HH:mm')}"></td>
-						</tr>
-					</tbody>
-				</table>
+				<h3 class="card-title text-center text-success"> Importar Arquivo</h3>
+				<form class="needs-validation" th:object="${arquivoForm}" action="importar" method="post" enctype="multipart/form-data">
+						<div class="custom-file">
+					  		<input th:field="*{arquivo}" type="file" class=" form-control custom-file-input" required>
+					  		<label class="custom-file-label" for="arquivo">Escolha um arquivo com extensão .csv</label>
+					  		<small class="text-danger" th:text="${mensagemErro}"></small>
+					  	</div>
+					  	<button type="submit" class="btn btn-outline-success mt-1">Importar</button>
+					  	<button type="reset" class="btn btn-outline-success mt-1 pl-2">Limpar</button>
+				</form>
 			</div>
 		</div>
+		<script type="text/javascript" src="/scripts/file-name.js"></script>
 	</body>
 </html>

@@ -2,6 +2,7 @@ package com.br.alura.challengebackend3.service.arquivo;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,6 @@ public abstract class ArquivoTransacoesService {
 		List<TransacaoDto> transacoesColunasValidadas = this.lerLinhasEliminarColunasInvalidas();
 		List<TransacaoDto> transacoes = this.eliminarDatasDistintas(transacoesColunasValidadas);
 		
-		return transacoes;
+		return Collections.unmodifiableList(transacoes);
 	}
 }

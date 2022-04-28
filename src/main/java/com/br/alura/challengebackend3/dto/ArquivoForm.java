@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FormularioArquivo {
+public class ArquivoForm {
 
 	private MultipartFile arquivo;
 	

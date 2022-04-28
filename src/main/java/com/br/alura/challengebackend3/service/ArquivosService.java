@@ -22,13 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.br.alura.challengebackend3.dto.ImportacoesArqsDto;
 import com.br.alura.challengebackend3.dto.TransacaoDto;
 import com.br.alura.challengebackend3.model.ImportacoesArqs;
-import com.br.alura.challengebackend3.repository.ImportacoesArqsRepository;
+import com.br.alura.challengebackend3.repository.ArquivosRepository;
 
 @Service
-public class ImportacoesArqsService {
+public class ArquivosService {
 
 	@Autowired
-	private ImportacoesArqsRepository repository;
+	private ArquivosRepository repository;
 
 	private final Path root = Paths.get("uploads");
 

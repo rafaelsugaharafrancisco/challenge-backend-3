@@ -4,24 +4,26 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.br.alura.challengebackend3.dto.FormularioArquivo;
+import com.br.alura.challengebackend3.dto.ArquivoForm;
 import com.br.alura.challengebackend3.dto.TransacaoDto;
-import com.br.alura.challengebackend3.service.ImportacoesArqsService;
+import com.br.alura.challengebackend3.service.ArquivosService;
 import com.br.alura.challengebackend3.service.TransacaoService;
 import com.br.alura.challengebackend3.service.ValidaFormularioService;
 import com.br.alura.challengebackend3.service.arquivo.ArquivoTransacoesService;
 
 @Controller
-@RequestMapping("/transacoes")
-public class TransacaoController {
+@RequestMapping("/arquivos")
+public class ArquivoController {
 
+	@Autowired
+	private ArquivosService service;
+	
 	@Autowired
 	private ValidaFormularioService formulario;
 
@@ -29,33 +31,25 @@ public class TransacaoController {
 	private TransacaoService transacoes;
 
 	@Autowired
-	private ImportacoesArqsService arquivo;
+	private ArquivosService arquivo;
 
 	@Autowired
 	private ArquivoTransacoesService csv;
+	
+	@GetMapping("importar")
+	public String formulario(ArquivoForm form) {
 
-	@GetMapping("home")
-	public String home(Model model) {
-
-		return "home";
+		return "arquivos/formulario";
 	}
-
-	@GetMapping("carregar-arquivo")
-	public String formulario(FormularioArquivo form) {
-
-		return "transacoes/formulario";
-	}
-
-	@PostMapping("carregar-arquivo")
-	public ModelAndView carregarArquivo(@ModelAttribute FormularioArquivo form) {
+	
+	@PostMapping("importar")
+	public ModelAndView carregarArquivo(@ModelAttribute ArquivoForm form) {
 
 		String mensagemErro = formulario.validarCampoArquivo(form.getArquivo());
 
 		if (!mensagemErro.isBlank()) {
-			return new ModelAndView("transacoes/formulario").addObject("mensagemErro", mensagemErro);
+			return new ModelAndView("arquivos/formulario").addObject("mensagemErro", mensagemErro);
 		}
-
-		System.out.println(form.getArquivo().getContentType());
 		
 		arquivo.gravarNoDiretorio(form.getArquivo());
 
@@ -66,6 +60,13 @@ public class TransacaoController {
 
 		arquivo.gravar(primeiraTransacaoGravada);
 
-		return new ModelAndView("redirect:arquivos/lista");
+		return new ModelAndView("redirect:lista");
+	}
+	
+	@GetMapping("lista")
+	public ModelAndView lista() {
+		
+		return new ModelAndView("arquivos/lista").addObject("arqsCarregados",
+				service.listarPorDataTransacaoOrdemDecrescente());
 	}
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.br.alura.challengebackend3.model.ImportacoesArqs;
 
 @Repository
-public interface ImportacoesArqsRepository extends JpaRepository<ImportacoesArqs, Long> {
+public interface ArquivosRepository extends JpaRepository<ImportacoesArqs, Long> {
 
 }

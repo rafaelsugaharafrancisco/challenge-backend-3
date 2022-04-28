@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+	crossorigin="anonymous">
+		</script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+	integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+	crossorigin="anonymous">
+		</script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+	integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+	crossorigin="anonymous">
+		</script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+	integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8">
+<title>Lista de Usuários</title>
+</head>
+<body>
+	<header>
+		<nav th:insert="~{base::menuBar}"></nav>
+	</header>
+	<div class="card ml-2 mr-2">
+		<div class="card-body">
+			<h3 class="card-title text-center text-success">Lista de
+				usuários cadastrados</h3>
+			<a class="btn btn-success mb-2" th:href="@{/usuarios/cadastro}"
+				role="button">Novo</a>
+			<table class="table table-striped table-sm table-bordered">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">NOME</th>
+						<th scope="col">E-MAIL</th>
+						<th scope="col">OPÇÕES</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="linha" th:each="usuario : ${usuarios}" scope="row">
+						<td th:text="${usuario.id}"></td>
+						<td th:text="${usuario.nome}"></td>
+						<td th:text="${usuario.email}"></td>
+						<td><a class="btn btn-outline-primary btn-sm"
+							th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
+							role="button">Editar</a> 
+							
+							<a th:if="${!#authentication.getPrincipal().getUsername().equals(usuario.nome)}"
+							class="btn btn-outline-danger btn-sm"
+							th:href="@{/usuarios/remover/{id}(id=${usuario.id})}"
+							role="button">Remover</a></td>
+<!-- 							th:onclick="|excluir(${usuario.id})|" -->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
