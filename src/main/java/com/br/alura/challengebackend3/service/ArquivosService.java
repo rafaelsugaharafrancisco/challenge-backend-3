@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -19,16 +20,20 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.br.alura.challengebackend3.dto.ImportacoesArqsDto;
+import com.br.alura.challengebackend3.dto.ArquivosDto;
 import com.br.alura.challengebackend3.dto.TransacaoDto;
-import com.br.alura.challengebackend3.model.ImportacoesArqs;
+import com.br.alura.challengebackend3.model.Arquivo;
 import com.br.alura.challengebackend3.repository.ArquivosRepository;
+import com.br.alura.challengebackend3.repository.UsuariosRepository;
 
 @Service
 public class ArquivosService {
 
 	@Autowired
-	private ArquivosRepository repository;
+	private ArquivosRepository arqsRepository;
+	
+	@Autowired
+	private UsuariosRepository userRepository;
 
 	private final Path root = Paths.get("uploads");
 
@@ -74,18 +79,23 @@ public class ArquivosService {
 		}
 	}
 
-	public void gravar(TransacaoDto trnDto) {
+	public void gravar(TransacaoDto trnDto, Principal principal) {
 
-		ImportacoesArqs impArqs = new ImportacoesArqs();
-		impArqs.setDataTransacao(LocalDate.from(trnDto.getDataHoraTransacao()));
-		impArqs.setDataHoraImportacao(LocalDateTime.now());
+		Arquivo arquivo = new Arquivo();
+		arquivo.setDataTransacao(LocalDate.from(trnDto.getDataHoraTransacao()));
+		arquivo.setDataHoraImportacao(LocalDateTime.now());
+		arquivo.setUsuario(userRepository.findByEmail(principal.getName()).get());
 
-		repository.save(new ImportacoesArqsDto(impArqs).toImportacoesArquivo());
+		arqsRepository.save(new ArquivosDto(arquivo).toArquivo());
 	}
 
-	public List<ImportacoesArqsDto> listarPorDataTransacaoOrdemDecrescente() {
+	public List<ArquivosDto> listarPorDataTransacaoOrdemDecrescente() {
 
 		return Collections.unmodifiableList(
-				ImportacoesArqsDto.obterLista(repository.findAll(Sort.by(Direction.DESC, "dataTransacao"))));
+				ArquivosDto.obterLista(arqsRepository.findAll(Sort.by(Direction.DESC, "dataTransacao"))));
+	}
+	
+	public ArquivosDto buscarPorId(long id) {
+		return new ArquivosDto(arqsRepository.findById(id).get());
 	}
 }

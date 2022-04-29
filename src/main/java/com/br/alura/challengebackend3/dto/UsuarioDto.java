@@ -16,7 +16,7 @@ public class UsuarioDto {
 	
 	public UsuarioDto(Usuario usuario) {
 		this.id = usuario.getId();
-		this.nome = usuario.getUsername();
+		this.nome = usuario.getNome();
 		this.email = usuario.getEmail();
 	}
 	

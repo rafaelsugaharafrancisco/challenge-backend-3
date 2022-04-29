@@ -3,8 +3,6 @@ package com.br.alura.challengebackend3.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.br.alura.challengebackend3.model.Usuario;
 
 import lombok.Getter;
@@ -23,11 +21,11 @@ public class UsuarioForm {
 	@NotBlank(message = "Não pode estar vazio ou em branco! Preencha com seu e-mail.")
 	private String email;
 	
-	public Usuario toUsuario(String senhaGerada) {
+	public Usuario toUsuario(String senhaAleatoria) {
 		Usuario usuario = new Usuario();
 		usuario.setNome(nome);
 		usuario.setEmail(email);
-		usuario.setSenha(new BCryptPasswordEncoder().encode(senhaGerada));
+		usuario.setSenha(senhaAleatoria);
 		usuario.setHabilitado(true);
 		
 		return usuario;

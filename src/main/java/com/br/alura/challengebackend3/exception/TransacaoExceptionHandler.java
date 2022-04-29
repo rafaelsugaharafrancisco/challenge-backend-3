@@ -9,27 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class TransacaoExceptionHandler {
 
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ArquivoVazioException.class)
-	public ModelAndView arquivoVazio(ArquivoVazioException e) {
-		
-		return new ModelAndView("transacoes/erro").addObject("mensagemErro", e.getMessage());
-	}
-	
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ArquivoNaoEncontradoException.class)
-	public ModelAndView arquivoNaoEncontrado(ArquivoNaoEncontradoException e) {
-		
-		return new ModelAndView("transacoes/erro").addObject("mensagemErro", e.getMessage());
-	}
-	
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ArquivoNaoCorrespondenteTransacoes.class)
-	public ModelAndView arquivoNaoCorrespondente(ArquivoNaoCorrespondenteTransacoes e) {
-		
-		return new ModelAndView("transacoes/erro").addObject("mensagemErro", e.getMessage());
-	}
-	
 	@ResponseStatus(code = HttpStatus.CONFLICT)
 	@ExceptionHandler(TransacaoJaExisteException.class)
 	public ModelAndView transacoesJaExistem(TransacaoJaExisteException e) {

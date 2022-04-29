@@ -54,7 +54,7 @@
 							th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
 							role="button">Editar</a> 
 							
-							<a th:if="${!#authentication.getPrincipal().getUsername().equals(usuario.nome)}"
+							<a th:if="${!#authentication.getPrincipal().getUsername().equals(usuario.email)}"
 							class="btn btn-outline-danger btn-sm"
 							th:href="@{/usuarios/remover/{id}(id=${usuario.id})}"
 							role="button">Remover</a></td>

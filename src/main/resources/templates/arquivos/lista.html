@@ -28,12 +28,18 @@
 						<tr>
 							<th scope="col">DATA TRANSAÇÕES</th>
 							<th scope="col">DATA/HORA IMPORTAÇÃO</th>
+							<th scope="col">NOME DO USUÁRIO</th>
+							<th scope="col">OPÇÕES</th>
 						</tr>
 					</thead>
 					<tbody >
 						<tr th:each="arqCarregado : ${arqsCarregados}" scope="row">
 							<td th:text="${#temporals.format(arqCarregado.dataTransacao, 'dd/MM/yyyy')}"></td>
 							<td th:text="${#temporals.format(arqCarregado.dataHoraImportacao, 'dd/MM/yyyy - HH:mm:ss')}"></td>
+							<td th:text="${arqCarregado.usuario.nome}"></td>
+							<td><a class="btn btn-outline-success btn-sm"
+							th:href="@{/arquivos/detalhar/{id}(id=${arqCarregado.id})}"
+							role="button">Detalhar</a> 
 						</tr>
 					</tbody>
 				</table>

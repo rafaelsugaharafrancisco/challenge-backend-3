@@ -44,6 +44,8 @@ public class UsuarioService implements UserDetailsService {
 		Usuario usuarioGravado = usuarioRepository.save(form.toUsuario(senhaGeradaAuto.gerarSenhaBCrypt()));
 		Perfil perfilUsuarioGravado = new Perfil(usuarioGravado, "COMUM");
 
+		System.out.println(senhaGeradaAuto.getSenhaGeradaAuto());
+		
 		perfilRepository.save(perfilUsuarioGravado);
 		
 		UsuarioDto usuarioDto = new UsuarioDto(usuarioGravado);
@@ -61,6 +63,16 @@ public class UsuarioService implements UserDetailsService {
 	public UsuarioDto pesquisarPorId(long id) {
 		
 		return new UsuarioDto(usuarioRepository.findById(id).get());
+	}
+	
+	public UsuarioDto pesquisarPorEmail(String email) {
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+		
+		if (usuario.isEmpty()) {
+			throw new UsuarioNaoExisteException("Usuário com e-mail "+email+" não encontrado!");
+		}
+		
+		return new UsuarioDto(usuario.get());
 	}
 
 	@Transactional
@@ -89,6 +101,7 @@ public class UsuarioService implements UserDetailsService {
 			throw new UsernameNotFoundException("Usuário/senha inválido");
 		}
 
+		System.out.println(usuario.get());
 		return usuario.get();
 	}
 	

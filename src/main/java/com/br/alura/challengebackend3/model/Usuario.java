@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity(name = "usuarios")
 public class Usuario implements UserDetails {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,6 +35,9 @@ public class Usuario implements UserDetails {
 	
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Perfil> perfis;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Arquivo> arquivosImportados;
 	
 	public String getNome() {
 		return nome;
@@ -62,20 +67,20 @@ public class Usuario implements UserDetails {
 		return id;
 	}
 
-	public List<Perfil> getPerfis() {
-		return perfis;
-	}
-
-	public void setPerfis(List<Perfil> perfis) {
-		this.perfis = perfis;
-	}
-
 	public Boolean getHabilitado() {
 		return habilitado;
 	}
 
 	public void setHabilitado(Boolean habilitado) {
 		this.habilitado = habilitado;
+	}
+
+	public List<Arquivo> getArquivosImportados() {
+		return arquivosImportados;
+	}
+
+	public void setArquivosImportados(List<Arquivo> arquivosImportados) {
+		this.arquivosImportados = arquivosImportados;
 	}
 
 	@Override
@@ -93,7 +98,7 @@ public class Usuario implements UserDetails {
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return nome;
+		return email;
 	}
 
 	@Override

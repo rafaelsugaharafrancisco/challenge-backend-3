@@ -7,9 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "arquivosImportados")
-public class ImportacoesArqs {
+public class Arquivo {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -17,6 +18,9 @@ public class ImportacoesArqs {
 	private LocalDate dataTransacao;
 	
 	private LocalDateTime dataHoraImportacao;
+	
+	@ManyToOne
+	private Usuario usuario;
 
 	public LocalDate getDataTransacao() {
 		return dataTransacao;
@@ -36,5 +40,13 @@ public class ImportacoesArqs {
 
 	public void setDataHoraImportacao(LocalDateTime dataHoraImportacao) {
 		this.dataHoraImportacao = dataHoraImportacao;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 }

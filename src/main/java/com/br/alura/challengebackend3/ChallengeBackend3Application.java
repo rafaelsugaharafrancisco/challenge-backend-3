@@ -34,13 +34,13 @@ public class ChallengeBackend3Application implements CommandLineRunner {
 		ias.deletarDiretorio();
 		ias.criarDiretorio();
 		
-		Usuario user = new Usuario();
-		user.setNome("admin");
-		user.setEmail("admin@email.com.br");
-		user.setSenha(new BCryptPasswordEncoder().encode("123999"));
-		user.setHabilitado(true);
-		Perfil aut = new Perfil(user, "PADRAO");
-		rep.save(user);
-		repAut.save(aut);
+//		Usuario user = new Usuario();
+//		user.setNome("admin");
+//		user.setEmail("admin@email.com.br");
+//		user.setSenha(new BCryptPasswordEncoder().encode("123999"));
+//		user.setHabilitado(true);
+//		Perfil aut = new Perfil(user, "PADRAO");
+//		rep.save(user);
+//		repAut.save(aut);
 	}
 }

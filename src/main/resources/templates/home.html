@@ -21,7 +21,7 @@
 			<nav th:insert="~{base :: menuBar}"></nav>
 		</header>
 		<div class="jumbotron">
-		  <h1 class="display-4" th:text="|Olá, ${#authentication.getPrincipal().getUsername()}!|"></h1>
+		  <h1 class="display-4" th:text="|Olá, ${nomeDoUsuario}!|"></h1>
 		  <p class="lead">Seja bem-vindo ao nosso sistema controle de transações.</p>
 <!-- 		  <hr class="my-4"> -->
 <!-- 		  <p>Esse sistema tem como objetivo identificar fraudes dado o arquivo de transações carregado via web.</p> -->

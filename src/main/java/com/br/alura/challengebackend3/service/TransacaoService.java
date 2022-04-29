@@ -1,8 +1,10 @@
 package com.br.alura.challengebackend3.service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +42,10 @@ public class TransacaoService {
 		repository.saveAll(transacoes);
 
 		return transacaoDto;
+	}
+	
+	public List<TransacaoDto> listarPorData(LocalDate dataTransacao) {
+		
+		return Collections.unmodifiableList(TransacaoDto.obterLista(repository.findAll(Date.valueOf(dataTransacao))));
 	}
 }
