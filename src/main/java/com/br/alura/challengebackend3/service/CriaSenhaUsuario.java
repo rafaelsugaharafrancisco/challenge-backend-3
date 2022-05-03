@@ -13,7 +13,6 @@ public class CriaSenhaUsuario {
 	}
 	
 	public String gerarSenhaBCrypt() {
-		System.out.println(senhaGeradaAuto);
 		return new BCryptPasswordEncoder().encode(senhaGeradaAuto);
 	}
 

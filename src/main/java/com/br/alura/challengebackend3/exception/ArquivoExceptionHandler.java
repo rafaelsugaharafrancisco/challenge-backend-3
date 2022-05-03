@@ -29,4 +29,11 @@ public class ArquivoExceptionHandler {
 		
 		return new ModelAndView("transacoes/erro").addObject("mensagemErro", e.getMessage());
 	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ErroDeFormularioArqException.class)
+	public ModelAndView erroDeFormularioArq(ErroDeFormularioArqException e) {
+		
+		return new ModelAndView("arquivos/erro").addObject("mensagemErro", e.getMessage());
+	}
 }

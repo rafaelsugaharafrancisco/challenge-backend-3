@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,8 +28,8 @@ public class UsuarioService implements UserDetailsService {
 	@Autowired
 	private PerfisRepository perfilRepository;
 	
-	@Autowired
-	private JavaMailSender mailSender;
+//	@Autowired
+//	private JavaMailSender mailSender;
 
 	@Transactional
 	public UsuarioDto cadastrar(UsuarioForm form) {
@@ -50,7 +48,7 @@ public class UsuarioService implements UserDetailsService {
 		
 		UsuarioDto usuarioDto = new UsuarioDto(usuarioGravado);
 		
-		this.enviarEmaildeConfirmacao(usuarioDto, senhaGeradaAuto.getSenhaGeradaAuto());
+//		this.enviarEmaildeConfirmacao(usuarioDto, senhaGeradaAuto.getSenhaGeradaAuto());
 		
 		return usuarioDto;
 	}
@@ -101,22 +99,21 @@ public class UsuarioService implements UserDetailsService {
 			throw new UsernameNotFoundException("Usuário/senha inválido");
 		}
 
-		System.out.println(usuario.get());
 		return usuario.get();
 	}
 	
-	private void enviarEmaildeConfirmacao(UsuarioDto usuarioDto, String senhaAleatoria) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setSubject("Confirmação de cadastro na Turingbank");
-		message.setText("Bem vindo, " + usuarioDto.getNome() + "\nSua senha de castrado é " + senhaAleatoria);
-		message.setFrom("turingbank@gmail.com");
-		message.setTo(usuarioDto.getEmail());
-
-		try {
-			mailSender.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	private void enviarEmaildeConfirmacao(UsuarioDto usuarioDto, String senhaAleatoria) {
+//		SimpleMailMessage message = new SimpleMailMessage();
+//		message.setSubject("Confirmação de cadastro na Turingbank");
+//		message.setText("Bem vindo, " + usuarioDto.getNome() + "\nSua senha de castrado é " + senhaAleatoria);
+//		message.setFrom("turingbank@gmail.com");
+//		message.setTo(usuarioDto.getEmail());
+//
+//		try {
+//			mailSender.send(message);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 }

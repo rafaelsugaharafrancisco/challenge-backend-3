@@ -9,11 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import com.br.alura.challengebackend3.model.Transacao;
 
-
 @Repository
-public interface TransacoesRepository extends JpaRepository<Transacao, Long>  {
-	
+public interface TransacoesRepository extends JpaRepository<Transacao, Long> {
+
 	@Query("SELECT t FROM transacoes t WHERE DATE(t.dataHoraTransacao) = :date")
 	List<Transacao> findAll(Date date);
 
+	@Query("SELECT t FROM transacoes t "
+			+ "WHERE SUBSTRING(t.dataHoraTransacao, 1, 7) = :mesAno")
+	List<Transacao> findByMesAno(String mesAno);
 }

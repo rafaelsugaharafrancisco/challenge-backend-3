@@ -18,7 +18,7 @@ import com.br.alura.challengebackend3.dto.ArquivosDto;
 import com.br.alura.challengebackend3.dto.TransacaoDto;
 import com.br.alura.challengebackend3.service.ArquivosService;
 import com.br.alura.challengebackend3.service.TransacaoService;
-import com.br.alura.challengebackend3.service.ValidaFormularioService;
+import com.br.alura.challengebackend3.service.ValidaFormularioArqService;
 import com.br.alura.challengebackend3.service.arquivo.ArquivoTransacoesService;
 
 @Controller
@@ -26,7 +26,7 @@ import com.br.alura.challengebackend3.service.arquivo.ArquivoTransacoesService;
 public class ArquivoController {
 
 	@Autowired
-	private ValidaFormularioService formulario;
+	private ValidaFormularioArqService formulario;
 
 	@Autowired
 	private TransacaoService transacoes;
@@ -38,7 +38,8 @@ public class ArquivoController {
 	private ArquivoTransacoesService csv;
 	
 	@GetMapping("importar")
-	public String formulario(ArquivoForm form) {
+	public String formulario(ArquivoForm form, ModelMap m) {
+		m.addAttribute("listaDeArqsImportados", arquivo.listarPorDataTransacaoOrdemDecrescente());
 
 		return "arquivos/formulario";
 	}
@@ -46,11 +47,7 @@ public class ArquivoController {
 	@PostMapping("importar")
 	public ModelAndView carregarArquivo(@ModelAttribute ArquivoForm form, Principal principal) {
 
-		String mensagemErro = formulario.validarCampoArquivo(form.getArquivo());
-
-		if (!mensagemErro.isBlank()) {
-			return new ModelAndView("arquivos/formulario").addObject("mensagemErro", mensagemErro);
-		}
+		formulario.validarCampoArquivo(form.getArquivo());
 		
 		arquivo.gravarNoDiretorio(form.getArquivo());
 
@@ -61,7 +58,7 @@ public class ArquivoController {
 
 		arquivo.gravar(primeiraTransacaoGravada, principal);
 
-		return new ModelAndView("redirect:lista");
+		return new ModelAndView("redirect:/arquivos/importar");
 	}
 	
 	@GetMapping("lista")

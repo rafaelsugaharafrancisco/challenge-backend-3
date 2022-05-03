@@ -12,10 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity(name = "usuarios")
+@SQLDelete(sql = "UPDATE usuarios SET habilitado = false WHERE id = ?")
 public class Usuario implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -36,7 +38,7 @@ public class Usuario implements UserDetails {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Perfil> perfis;
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario")
 	private List<Arquivo> arquivosImportados;
 	
 	public String getNome() {
@@ -121,7 +123,7 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
+
+		return this.habilitado;
 	}
 }
